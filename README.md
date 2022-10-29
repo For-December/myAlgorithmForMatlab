@@ -6,7 +6,7 @@
 
 - Republished
 
-# This is only a test project, and the implementation method is finally called by matlab
+# This is only a test project for my homework, and the implementation method is finally called by matlab
 
 
 
@@ -74,7 +74,7 @@ The return value is the shortest path matrix of the same type as the "matrix", w
 
 - 已重新发布
 
-# 只是个测试项目，实现的方法最终交由matlab调用
+# 只是个为作业服务的测试项目，实现的方法最终交由matlab调用
 
 - 核心文件是+myBFS.cpp+以及+myAStar.cpp
 
