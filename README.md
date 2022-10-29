@@ -24,7 +24,7 @@ Preparing environment in matlab
 
 
 
-%Building environment
+% Building environment
 
 mex -setup
 
