@@ -67,6 +67,13 @@ MyAStar (matrix, starting point x, starting point y, ending point x, ending poin
 The return value is the shortest path matrix of the same type as the "matrix", which is only composed of 0 and 127 (the shortest in pixels, not necessarily visually)
 
 
+**Special note**: I did not map the point coordinates here, that is, the subscript starts from zero to the largest row or column of the matrix minus one
+```matlab
+% For example a 100x100 map matrix, from top left to bottom right, should be used like this
+myAStar(matrix,0,0,99,99);
+...
+
+
 # myAlgorithmOnMatlab
 ~~基于BFS(之后或许会改为A*)的走迷宫？寻路？算法~~
 
@@ -104,8 +111,9 @@ myAStar(矩阵,起始点x,起始点y,终止点x,终止点y);
 
 ```
 返回值为和"矩阵"同型的，仅由0和127组成的最短路径矩阵(像素上最短，视觉上不一定)
+
 **特别提示**:这里的点坐标我没有进行映射，即下标从零开始到矩阵最大行或列减一
 ```matlab
 % 例如一个100x100的地图矩阵，从左上角到右下角，应当像这样使用
 myAStar(矩阵,0,0,99,99);
-...
+```
