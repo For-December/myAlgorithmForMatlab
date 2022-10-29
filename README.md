@@ -72,7 +72,7 @@ The return value is the shortest path matrix of the same type as the "matrix", w
 ```matlab
 % For example a 100x100 map matrix, from top left to bottom right, should be used like this
 myAStar(matrix,0,0,99,99);
-% All illeegal use will be alert
+% All illeegal use will get an alert--including out of index
 ```
 
 
@@ -120,5 +120,5 @@ myAStar(矩阵,起始点x,起始点y,终止点x,终止点y);
 ```matlab
 % 例如一个100x100的地图矩阵，从左上角到右下角，应当像这样使用
 myAStar(矩阵,0,0,99,99);
-% 所有不合法的使用行为都会收到警告提示
+% 所有不合法的使用行为都会收到警告提示————包括索引越界
 ```
