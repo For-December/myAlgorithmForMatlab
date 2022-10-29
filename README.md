@@ -28,15 +28,15 @@ Preparing environment in matlab
 
 mex -setup
 
-%Select the C++environment when prompted
+% Select the C++environment when prompted
 
 
 
-%Building environment
+% Building environment
 
 mbuild -setup
 
-%If MATLAB Compiler SDK is not installed, the command line will respond to the prompt
+% If MATLAB Compiler SDK is not installed, the command line will respond to the prompt
 
 
 
