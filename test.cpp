@@ -145,7 +145,6 @@ double* BFS(int M, int N, double* graph, int startX, int startY, int endX, int e
 
 }
 
-
 struct point {
 	int x = 0;
 	int y = 0;
@@ -195,8 +194,10 @@ double* AStar(int M, int N, double* graph, int startX, int startY, int endX, int
 
 		if (temp->x == endX && temp->y == endY) {
 
+
 			double* res = new double[M * N]{};
 			point* t = temp;
+			res[t->x * N + t->y] = 127;
 			while (t->father != nullptr) {
 				t = t->father;
 				res[t->x * N + t->y] = 127;
@@ -293,7 +294,7 @@ int main() {
 		m[i] = new int[6];
 		memset(m[i], 0, 6 * sizeof(int));
 	}
-	double t[100][100] = {};
+	double t[5][5] = {};
 	/*
 	{
 		0,0,0,0,0,0,
@@ -311,11 +312,11 @@ int main() {
 		}
 	}
 	
-	double*path=AStar(100, 100, (double*)t, 0, 0, 99, 99);
+	double*path=AStar(5, 5, (double*)t, 0, 0, 4, 4);
 
-	for (int i = 0; i < 100; i++) {
-		for (int j = 0; j < 100; j++) {
-			cout << path[i * 100 + j] << "\t";
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 5; j++) {
+			cout << path[i * 5 + j] << "\t";
 		}
 		cout << endl;
 	}
