@@ -177,7 +177,9 @@ double* AStar(int M, int N, double* graph, int startX, int startY, int endX, int
 	return nullptr;
 }
 
+
 double solveCostOfCurPath(int M, int N, double* path, int startX, int startY, int endX, int endY) {
+	colFirstToRowFirst(path, M, N); // 别忘了！！！
 	// 记录走过的路
 	double* temp = new double[M * N]{};
 
@@ -190,13 +192,16 @@ double solveCostOfCurPath(int M, int N, double* path, int startX, int startY, in
 	int err = 0;
 	while (true) {
 		err++;
-		if (err > M * N)return -1; // 循环超过M*N次，说明输入数据不合适
+		if (err > M * N) {
+			delete[] temp;
+			return -1;
+		} // 循环超过M*N次，说明输入数据不合适
 		if (curX == endX && curY == endY) {
 			delete[] temp;
 			return count;
 		}
 		for (int i = 0; i < 8; i++) {
-			if (curX + px[i] >= M || curY + py[i] >= N || curX + px[i] < 0 || curX + py[i] < 0)continue;
+			if (curX + px[i] >= M || curY + py[i] >= N || curX + px[i] < 0 || curY + py[i] < 0)continue;
 
 			if (-1 == temp[(curX + px[i]) * N + (curY + py[i])])continue;
 			if (abs(127 - path[(curX + px[i]) * N + (curY + py[i])]) < 0.1) {

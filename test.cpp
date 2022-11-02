@@ -281,7 +281,7 @@ double* AStar(int M, int N, double* graph, int startX, int startY, int endX, int
 
 	return nullptr;
 }
-double solveCostOfCurPath(int M, int N, double* path,int startX,int startY,int endX,int endY) {
+double solveCostOfCurPath(int M, int N, double* path, int startX, int startY, int endX, int endY) {
 	// 记录走过的路
 	double* temp = new double[M * N]{};
 
@@ -294,16 +294,19 @@ double solveCostOfCurPath(int M, int N, double* path,int startX,int startY,int e
 	int err = 0;
 	while (true) {
 		err++;
-		if (err > M * N)return -1; // 循环超过M*N次，说明输入数据不合适
-		if (curX == endX && curY == endY) { 
+		if (err > M * N) {
+			delete[] temp;
+			return -1;
+		} // 循环超过M*N次，说明输入数据不合适
+		if (curX == endX && curY == endY) {
 			delete[] temp;
 			return count;
 		}
 		for (int i = 0; i < 8; i++) {
-			if (curX + px[i] >= M || curY + py[i] >= N||curX+px[i]<0||curX+py[i]<0)continue;
+			if (curX + px[i] >= M || curY + py[i] >= N || curX + px[i] < 0 || curY + py[i] < 0)continue;
 
 			if (-1 == temp[(curX + px[i]) * N + (curY + py[i])])continue;
-			if (abs(127 - path[(curX+px[i]) * N + (curY+py[i])]) < 0.1) {
+			if (abs(127 - path[(curX + px[i]) * N + (curY + py[i])]) < 0.1) {
 				switch (i) {
 				case 1:
 				case 3:
@@ -325,6 +328,7 @@ double solveCostOfCurPath(int M, int N, double* path,int startX,int startY,int e
 
 }
 
+
 #define MYSIZE 6
 int main() {
 
@@ -342,10 +346,11 @@ int main() {
 	double t[6][6] = {};
 	//{
 	//	0,0,0,0,0,0,
-	//	1,1,0,1,1,0,
-	//	1,0,0,1,0,0,
-	//	1,0,1,0,1,1,
-	//	1,0,0,0,0,0,
+	//	1,1,1,0,0,1,
+	//	1,0,0,1,0,1,
+	//	1,0,1,0,0,0,
+	//	1,0,0,0,1,0,
+	//	1,1,1,1,1,0
 	//};
 	
 	
@@ -356,7 +361,7 @@ int main() {
 		}
 	}
 	
-	double*path=AStar(MYSIZE, MYSIZE, (double*)t, 0, 0, MYSIZE-1, MYSIZE-1);
+	double*path=AStar(MYSIZE, MYSIZE, (double*)t, 0, 0, 1, 2);
 
 	for (int i = 0; i < MYSIZE; i++) {
 		for (int j = 0; j < MYSIZE; j++) {
@@ -365,12 +370,13 @@ int main() {
 		cout << endl;
 	}
 
-	path[0, 0] = 0;
-	cout << solveCostOfCurPath(MYSIZE, MYSIZE, path, MYSIZE-1, MYSIZE-1, 0, 0);
-	cout << (solveCostOfCurPath(MYSIZE, MYSIZE, path, MYSIZE - 1, MYSIZE - 1, 0, 0) == -1);
+//	path[0, 0] = 0;
+	//cout << solveCostOfCurPath(MYSIZE, MYSIZE, path, MYSIZE-1, MYSIZE-1, 0, 0);
+	//cout << (solveCostOfCurPath(MYSIZE, MYSIZE, path, MYSIZE - 1, MYSIZE - 1, 0, 0) == -1);
 
 
 
+	cout << solveCostOfCurPath(MYSIZE, MYSIZE, path,0,0,1,2);
 
 
 
