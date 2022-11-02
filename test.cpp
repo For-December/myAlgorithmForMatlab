@@ -290,7 +290,11 @@ double solveCostOfCurPath(int M, int N, double* path,int startX,int startY,int e
 	int curX = startX;
 	int curY = startY;
 	double count = 0;
+	temp[startX * N + startY] = -1; // 初始化初始点，否则死循环
+	int err = 0;
 	while (true) {
+		err++;
+		if (err > M * N)return -1; // 循环超过M*N次，说明输入数据不合适
 		if (curX == endX && curY == endY) { 
 			delete[] temp;
 			return count;
@@ -320,6 +324,7 @@ double solveCostOfCurPath(int M, int N, double* path,int startX,int startY,int e
 	}
 
 }
+
 #define MYSIZE 6
 int main() {
 
@@ -360,8 +365,9 @@ int main() {
 		cout << endl;
 	}
 
+	path[0, 0] = 0;
 	cout << solveCostOfCurPath(MYSIZE, MYSIZE, path, MYSIZE-1, MYSIZE-1, 0, 0);
-
+	cout << (solveCostOfCurPath(MYSIZE, MYSIZE, path, MYSIZE - 1, MYSIZE - 1, 0, 0) == -1);
 
 
 

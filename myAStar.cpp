@@ -176,6 +176,7 @@ double* AStar(int M, int N, double* graph, int startX, int startY, int endX, int
 
 	return nullptr;
 }
+
 double solveCostOfCurPath(int M, int N, double* path, int startX, int startY, int endX, int endY) {
 	// 记录走过的路
 	double* temp = new double[M * N]{};
@@ -185,7 +186,11 @@ double solveCostOfCurPath(int M, int N, double* path, int startX, int startY, in
 	int curX = startX;
 	int curY = startY;
 	double count = 0;
+	temp[startX * N + startY] = -1; // 初始化初始点，否则死循环
+	int err = 0;
 	while (true) {
+		err++;
+		if (err > M * N)return -1; // 循环超过M*N次，说明输入数据不合适
 		if (curX == endX && curY == endY) {
 			delete[] temp;
 			return count;
@@ -253,5 +258,6 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[]) {
 		plhs[1] = mxCreateDoubleMatrix(1, 1, mxREAL);
 		double* count = mxGetPr(plhs[1]);
 		*count = solveCostOfCurPath(mrows, nrows, outData, startX - 1, startY - 1, endX - 1, endY - 1);
+		if (*count == -1)mexErrMsgTxt("Cannot solve cost, is your path a line without break?");
 	}
 }
