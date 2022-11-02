@@ -89,9 +89,10 @@ double* AStar(int M, int N, double* graph, int startX, int startY, int endX, int
 
 			double* res = new double[M * N]{};
 			point* t = temp;
+			res[t->x * N + t->y] = 127;
 			while (t->father != nullptr) {
-				res[t->x * N + t->y] = 127;
 				t = t->father;
+				res[t->x * N + t->y] = 127;
 			}
 
 			// delete掉动态分配的所有指针
@@ -175,6 +176,46 @@ double* AStar(int M, int N, double* graph, int startX, int startY, int endX, int
 
 	return nullptr;
 }
+double solveCostOfCurPath(int M, int N, double* path, int startX, int startY, int endX, int endY) {
+	// 记录走过的路
+	double* temp = new double[M * N]{};
+
+	int px[] = { 0,1,1,1,0,-1,-1,-1 };
+	int py[] = { -1,-1,0,1,1,1,0,-1 };
+	int curX = startX;
+	int curY = startY;
+	double count = 0;
+	while (true) {
+		if (curX == endX && curY == endY) {
+			delete[] temp;
+			return count;
+		}
+		for (int i = 0; i < 8; i++) {
+			if (curX + px[i] >= M || curY + py[i] >= N || curX + px[i] < 0 || curX + py[i] < 0)continue;
+
+			if (-1 == temp[(curX + px[i]) * N + (curY + py[i])])continue;
+			if (abs(127 - path[(curX + px[i]) * N + (curY + py[i])]) < 0.1) {
+				switch (i) {
+				case 1:
+				case 3:
+				case 5:
+				case 7:
+					count += 1.414;
+					break;
+				default:
+					count += 1;
+					break;
+				}
+				curX += px[i];
+				curY += py[i];
+				temp[curX * N + curY] = -1;
+				break;
+			}
+		}
+	}
+
+}
+
 
 void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[]) {
 	if (nrhs != 5) {
@@ -196,15 +237,21 @@ void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[]) {
 	int startY = *(mxGetPr(prhs[2]));
 	int endX = *(mxGetPr(prhs[3]));
 	int endY = *(mxGetPr(prhs[4]));
-	if (endX >= mrows || endX >= nrows || startX >= mrows || startY >= nrows) {
+	if (endX > mrows || endY > nrows || startX > mrows || startY > nrows) {
 		mexErrMsgTxt("Please check your start and end Pos, which may out of index.");
 	}
-	if (endX < 0 || endY < 0 || startX < 0 || startY < 0) {
+	if (endX <= 0 || endY <= 0 || startX <= 0 || startY <= 0) {
 		mexErrMsgTxt("Illegal parameters!!");
 	}
 	double* copyOfInData = new double[mrows * nrows];// avoid modifying the original data;
-	memcpy(copyOfInData, inData, mrows * nrows * sizeof(double));// cannot overlap;
-	double* res = AStar(mrows, nrows, copyOfInData, startX, startY, endX, endY);
-	memcpy(outData, res, mrows * nrows * sizeof(double));
+	::memcpy(copyOfInData, inData, mrows * nrows * sizeof(double));// cannot overlap;
+	double* res = AStar(mrows, nrows, copyOfInData, startX-1, startY-1, endX-1, endY-1); // map
+	::memcpy(outData, res, mrows * nrows * sizeof(double));
 	delete[] copyOfInData;
+	delete[]res;
+	if (nlhs == 2) {
+		plhs[1] = mxCreateDoubleMatrix(1, 1, mxREAL);
+		double* count = mxGetPr(plhs[1]);
+		*count = solveCostOfCurPath(mrows, nrows, outData, startX - 1, startY - 1, endX - 1, endY - 1);
+	}
 }

@@ -281,7 +281,46 @@ double* AStar(int M, int N, double* graph, int startX, int startY, int endX, int
 
 	return nullptr;
 }
+double solveCostOfCurPath(int M, int N, double* path,int startX,int startY,int endX,int endY) {
+	// 记录走过的路
+	double* temp = new double[M * N]{};
 
+	int px[] = { 0,1,1,1,0,-1,-1,-1 };
+	int py[] = { -1,-1,0,1,1,1,0,-1 };
+	int curX = startX;
+	int curY = startY;
+	double count = 0;
+	while (true) {
+		if (curX == endX && curY == endY) { 
+			delete[] temp;
+			return count;
+		}
+		for (int i = 0; i < 8; i++) {
+			if (curX + px[i] >= M || curY + py[i] >= N||curX+px[i]<0||curX+py[i]<0)continue;
+
+			if (-1 == temp[(curX + px[i]) * N + (curY + py[i])])continue;
+			if (abs(127 - path[(curX+px[i]) * N + (curY+py[i])]) < 0.1) {
+				switch (i) {
+				case 1:
+				case 3:
+				case 5:
+				case 7:
+					count += 1.414;
+					break;
+				default:
+					count += 1;
+					break;
+				}
+				curX += px[i];
+				curY += py[i];
+				temp[curX * N + curY] = -1;
+				break;
+			}
+		}
+	}
+
+}
+#define MYSIZE 6
 int main() {
 
 
@@ -294,16 +333,16 @@ int main() {
 		m[i] = new int[6];
 		memset(m[i], 0, 6 * sizeof(int));
 	}
-	double t[5][5] = {};
-	/*
-	{
-		0,0,0,0,0,0,
-		1,1,0,1,1,0,
-		1,0,0,1,0,0,
-		1,0,1,0,0,0,
-		1,0,1,0,0,0,
-	};
-	*/
+	//double t[MYSIZE][MYSIZE] = {};
+	double t[6][6] = {};
+	//{
+	//	0,0,0,0,0,0,
+	//	1,1,0,1,1,0,
+	//	1,0,0,1,0,0,
+	//	1,0,1,0,1,1,
+	//	1,0,0,0,0,0,
+	//};
+	
 	
 	for (int i = 0; i < 6; i++) {
 		for (int j = 0; j < 6; j++) {
@@ -312,14 +351,16 @@ int main() {
 		}
 	}
 	
-	double*path=AStar(5, 5, (double*)t, 0, 0, 4, 4);
+	double*path=AStar(MYSIZE, MYSIZE, (double*)t, 0, 0, MYSIZE-1, MYSIZE-1);
 
-	for (int i = 0; i < 5; i++) {
-		for (int j = 0; j < 5; j++) {
-			cout << path[i * 5 + j] << "\t";
+	for (int i = 0; i < MYSIZE; i++) {
+		for (int j = 0; j < MYSIZE; j++) {
+			cout << path[i * MYSIZE + j] << "\t";
 		}
 		cout << endl;
 	}
+
+	cout << solveCostOfCurPath(MYSIZE, MYSIZE, path, MYSIZE-1, MYSIZE-1, 0, 0);
 
 
 
