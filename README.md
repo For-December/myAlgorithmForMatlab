@@ -64,14 +64,16 @@ MyAStar (matrix, starting point x, starting point y, ending point x, ending poin
 
 ```
 
-The return value is the shortest path matrix of the same type as the "matrix", which is only composed of 0 and 127 (the shortest in pixels, not necessarily visually)
+The return value is the shortest path matrix of the same type as the 「matrix」, which is only composed of 0 and 127 (the shortest in pixels, not necessarily visually)
 
 ## Special note
-- I did not map the point coordinates here
-- that is, the subscript starts from zero to the largest row or column of the matrix minus one
+- ~~I did not map the point coordinates here~~
+- ~~that is, the subscript starts from zero to the largest row or column of the matrix minus one~~
+- AStar has mapped now!
 ```matlab
 % For example a 100x100 map matrix, from top left to bottom right, should be used like this
-myAStar(matrix,0,0,99,99);
+% have already mapped
+myAStar(matrix,1,1,100,100);
 % All illeegal use will get an alert--including out of index
 ```
 
@@ -111,14 +113,21 @@ mbuild -setup
 % 以myAStar为例，另一个参数一致
 myAStar(矩阵,起始点x,起始点y,终止点x,终止点y);
 
+% 返回值有两个可选
+Path=myAStar(...)
+[Path,count]=myAStar(...)
+Path 为矩阵，count 为像素点距离
+
 ```
-返回值为和"矩阵"同型的，仅由0和127组成的最短路径矩阵(像素上最短，视觉上不一定)
+返回值为和「矩阵」同型的，仅由0和127组成的最短路径矩阵(像素上最短，视觉上不一定)
 
 ## 特别说明
-- 这里的点坐标我没有进行映射
-- 即下标从零开始到矩阵最大行或列减一
+- ~~这里的点坐标我没有进行映射~~
+- ~~即下标从零开始到矩阵最大行或列减一~~
+- 现AStar算法已进行映射
 ```matlab
 % 例如一个100x100的地图矩阵，从左上角到右下角，应当像这样使用
-myAStar(矩阵,0,0,99,99);
+% 已进行映射
+myAStar(矩阵,1,1,100,100);
 % 所有不合法的使用行为都会收到警告提示————包括索引越界
 ```
